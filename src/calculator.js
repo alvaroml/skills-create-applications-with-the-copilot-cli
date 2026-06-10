@@ -25,55 +25,58 @@ function toNumber(s) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-const args = process.argv.slice(2);
-if (args.length < 3) {
-  console.error('Error: missing arguments.');
-  printUsage();
-  process.exit(2);
-}
-
-const [op, aRaw, bRaw] = args;
-const a = toNumber(aRaw);
-const b = toNumber(bRaw);
-if (Number.isNaN(a) || Number.isNaN(b)) {
-  console.error('Error: both operands must be valid numbers.');
-  process.exit(3);
-}
-
-let result;
-switch (op.toLowerCase()) {
-  case 'add':
-  case '+':
-    result = a + b;
-    break;
-
-  case 'sub':
-  case '-':
-    result = a - b;
-    break;
-
-  case 'mul':
-  case 'x':
-  case '*':
-    result = a * b;
-    break;
-
-  case 'div':
-  case '/':
-    if (b === 0) {
-      console.error('Error: division by zero');
-      process.exit(4);
-    }
-    result = a / b;
-    break;
-
-  default:
-    console.error(`Error: unknown operation "${op}"`);
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  if (args.length < 3) {
+    console.error('Error: missing arguments.');
     printUsage();
-    process.exit(5);
+    process.exit(2);
+  }
+
+  const [op, aRaw, bRaw] = args;
+  const a = toNumber(aRaw);
+  const b = toNumber(bRaw);
+  if (Number.isNaN(a) || Number.isNaN(b)) {
+    console.error('Error: both operands must be valid numbers.');
+    process.exit(3);
+  }
+
+  let result;
+  switch (op.toLowerCase()) {
+    case 'add':
+    case '+':
+      result = a + b;
+      break;
+
+    case 'sub':
+    case '-':
+      result = a - b;
+      break;
+
+    case 'mul':
+    case 'x':
+    case '*':
+      result = a * b;
+      break;
+
+    case 'div':
+    case '/':
+      if (b === 0) {
+        console.error('Error: division by zero');
+        process.exit(4);
+      }
+      result = a / b;
+      break;
+
+    default:
+      console.error(`Error: unknown operation "${op}"`);
+      printUsage();
+      process.exit(5);
+  }
+
+  console.log(result);
 }
 
-console.log(result);
 
 // Export for testing or programmatic use
 module.exports = {
